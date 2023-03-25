@@ -1,31 +1,49 @@
 ﻿#include<iostream>
 using namespace std;
 
-void FillRand(int arr[], const int n);
+const int ROWS = 3;
+const int COLS = 4;
+
+void FillRand(int arr[], const int n, int minRand = 0, int maxRand = 100);
 void FillRand(double arr[], const int n);
+void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS);
 
 void Print(const int arr[], const int n);
 void Print(const double arr[], const int n);
+void Print(int arr[ROWS][COLS], const int ROWS, const int COLS);
 
 int Sum(const int arr[], const int n);
+int Sum(const int arr[ROWS][COLS], const int ROWS, const int COLS);
 double Avg(const int arr[], const int n);
+double Avg(const int arr[ROWS][COLS], const int ROWS, const int COLS);
 int minValueIn(const int arr[], const int n);
 int maxValueIn(const int arr[], const int n);
 void shiftLeft(int arr[], const int n, int number_of_shifts);
 void shiftRight(int arr[], const int n, int number_of_shifts);
 void Sort(int arr[], const int n);
+void Sort(int arr[ROWS][COLS], const int ROWS, const int COLS);
+
+void UniqueRand(int arr[], const int n);
+void Search(int arr[], const int n);
+
+//#define ARRAYS_1
+#define ARRAYS_2
 
 void main()
 {
+
+#ifdef ARRAYS_1
 	setlocale(LC_ALL, "");
-	const int n = 5;
+	const int n = 10;
 	int arr[n] = { 3,5,8 };
-	FillRand(arr, n);
+	FillRand(arr, n, 0, 5);
+	//UniqueRand(arr, n);
 	Print(arr, n);
 	cout << "Сумма элементов массива: " << Sum(arr, n) << endl;
 	cout << "Среднее арифметическое элементов массива: " << Avg(arr, n) << endl;
 	cout << "Минимальное значение в массиве:  " << minValueIn(arr, n) << endl;
 	cout << "Максимальное значение в массиве: " << maxValueIn(arr, n) << endl;
+	Search(arr, n);
 	Sort(arr, n);
 	Print(arr, n);
 	int number_of_shifts;
@@ -39,15 +57,22 @@ void main()
 	double d_arr[SIZE];
 	FillRand(d_arr, SIZE);
 	Print(d_arr, SIZE);
+#endif
 
-
+	int i_arr_2[ROWS][COLS];
+	FillRand(i_arr_2, ROWS, COLS);
+	Print(i_arr_2, ROWS, COLS);
+	cout << "Сумма элементов массива: " << Sum(i_arr_2, ROWS, COLS) << endl;
+	cout << "Среднее арифметическое элементов массива: " << Avg(i_arr_2, ROWS, COLS) << endl;
+	Sort(i_arr_2, ROWS, COLS);
+	Print(i_arr_2, ROWS, COLS);
 }
-void FillRand(int arr[], const int n)
+void FillRand(int arr[], const int n, int minRand, int maxRand)
 {
 	//rand();	//возвращает псевдослучайное число в диапазоне от 0 до 32 767 (MAX_RAND)
 	for (int i = 0; i < n; i++)
 	{
-		arr[i] = rand() % 100;
+		arr[i] = rand() % (maxRand - minRand) + minRand;
 	}
 }
 void FillRand(double arr[], const int n)
@@ -89,9 +114,25 @@ int Sum(const int arr[], const int n)
 	}
 	return sum;
 }
+int Sum(const int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	int sum = 0;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			sum += arr[i][j];
+		}
+	}
+	return sum;
+}
 double Avg(const int arr[], const int n)
 {
 	return (double)Sum(arr, n) / n;
+}
+double Avg(const int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	return(double)Sum(arr, ROWS, COLS) / (ROWS * COLS);
 }
 int minValueIn(const int arr[], const int n)
 {
@@ -147,6 +188,93 @@ void Sort(int arr[], const int n)
 				arr[j] ^= arr[i];
 				arr[i] ^= arr[j];
 
+			}
+		}
+	}
+}
+void UniqueRand(int arr[], const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = rand() % n;
+		for (int j = 0; j < i; j++)
+		{
+			if (arr[i] == arr[j])
+			{
+				i--;
+				break;
+			}
+		}
+	}
+}
+void Search(int arr[], const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		bool met_before = false;
+		for (int j = 0; j < i; j++)
+		{
+			if (arr[i] == arr[j])
+			{
+				met_before = true;
+				break;
+			}
+		}
+
+		if (met_before) continue;
+
+		int count = 0;
+		for (int j = i + 1; j < n; j++)
+		{
+			if (arr[i] == arr[j])
+			{
+				count++;
+			}
+		}
+		if (count)cout << "Значение " << arr[i] << "Повторяется " << count << "раз " << endl;
+	}
+}
+void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			arr[i][j] = rand() % 100;
+		}
+	}
+}
+void Print(int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+}
+void Sort(int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	int iterations = 0;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			for (int k = i; k < ROWS; k++)
+			{
+				for (int l = k == i ? j + 1 : 0; l < COLS; l++)
+				{
+					if (arr[k][l] < arr[i][j])
+					{
+						arr[i][j] ^= arr[k][l];
+						arr[k][l] ^= arr[i][j];
+						arr[i][j] ^= arr[k][l];
+					}
+					iterations++;
+
+				}
 			}
 		}
 	}

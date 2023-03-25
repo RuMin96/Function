@@ -8,6 +8,7 @@ double Quotient(double a, double b);
 int Reminder(int a, int b);
 
 
+
 void main()
 {
 	setlocale(LC_ALL, "");
