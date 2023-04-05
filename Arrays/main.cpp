@@ -378,6 +378,7 @@ double minValueIn(const double arr[ROWS][COLS], const double ROWS, const int COL
 			if (arr[i][j] < min)min = arr[i][j];
 		}
 	}
+	return min;
 }
 char minValueIn(const char arr[ROWS][COLS], const char ROWS, const int COLS)
 {
@@ -389,6 +390,7 @@ char minValueIn(const char arr[ROWS][COLS], const char ROWS, const int COLS)
 			if (arr[i][j] < min)min = arr[i][j];
 		}
 	}
+	return min;
 }
 int maxValueIn(const int arr[], const int n)
 {
@@ -503,10 +505,10 @@ void shiftLeft(int arr[ROWS][COLS], const int n, const int number_of_shifts)
 		{
 			for (int j = 0; j < COLS; j++)
 			{
-				arr[i][j] = arr[i + 1];
+				//arr[i][j] = arr[i + 1];
 			}
 		}
-		arr[n - 1] = buffer;
+		//arr[n - 1] = buffer;
 	}
 }
 void shiftRight(int arr[], const int n, int number_of_shifts)
